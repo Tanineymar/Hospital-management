@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
         match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/  , 'Please fill a valid email address.'],
         unique:true
     },
-    Password:{
+    password:{
         type:String,
         required:[true ,"Password is required"],
         minlength:[6 , "Password should be contain more then 6 characters."],
@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
         type:String,
         enum:["patient","doctor", "lab_admin" ,"admin"],
         default:"patient",
-        required:true
+
     },
     status:{
         type:String,
@@ -36,11 +36,10 @@ const userSchema = new mongoose.Schema({
 
 
 userSchema.pre("save" , async function () {
-    if(!this.isModified("password")){
-        return
-    }
-    const hash = await bcrypt.hash(this.Password ,10)
-    this.Password = hash
+    if(!this.isModified("password")) return
+    
+    const hash = await bcrypt.hash(this.password ,10)
+    this.password = hash
     return
     
 })
@@ -52,3 +51,4 @@ userSchema.methods.comparePassword = async function (password) {
 
 
 const userModel  = mongoose.model("User" , userSchema)
+export default userModel
