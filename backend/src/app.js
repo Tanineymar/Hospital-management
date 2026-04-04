@@ -7,8 +7,10 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 
-
+// signup /login 
 app.use('/api/auth' , authRouter)
+
+// doctor / lab staff
 app.use('/api' , applicationRouter)
 
 

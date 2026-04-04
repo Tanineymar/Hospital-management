@@ -18,7 +18,7 @@ async function userSignupController(req, res) {
             role
         })
 
-        const token = jwt.sign({ user: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '10d' })
+        const token = jwt.sign({ userId: user._id, role: user.role , name:user.name }, process.env.JWT_SECRET, { expiresIn: '10d' })
 
         res.cookie("token", token, {
             httpOnly: true,

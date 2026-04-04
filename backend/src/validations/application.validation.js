@@ -12,9 +12,10 @@ async function vaildateResult(req ,res ,next) {
 }
 
 const applicationValidation = [
+    
     body("applyingFor")
     .notEmpty().withMessage("Applying for is required.")
-    .isIn(["doctor",  "lab-staff"]).withMessage("Must be a doctor or lab staff"),
+    .isIn(["doctor",  "lab_staff"]).withMessage("Must be a doctor or lab staff"),
 
     body("specialization")
     .if(body("applyingFor").equals("doctor"))
