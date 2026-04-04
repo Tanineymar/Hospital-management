@@ -9,17 +9,25 @@ const applicationSchema = new mongoose.Schema({
 
     applyingFor:{
         type:String,
-        enum:["doctor", "lab_admin"],
+        enum:["doctor" , "lab_staff"],
         required:true
     },
-    licenseNumber:{
+    status:{
         type:String,
-        required:true
+        enum:['pending', 'approved', 'rejected'],
+        default:'pending'
     },
-    specialization:{
-        type:String,
-        required:true
-    }
+
+    // Doctor feild
+    specialization:{type : String},
+    licenseNumber:{type : String},
+    qualification:{type : String},
+
+    // Lab staff feild
+    department : {type : String},
+    
 } , {timestamps:true})
 
-export default applicationSchema
+const applicationModel =  mongoose.model("Application" , applicationSchema)
+
+export default applicationModel
