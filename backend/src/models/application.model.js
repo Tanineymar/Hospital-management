@@ -9,7 +9,7 @@ const applicationSchema = new mongoose.Schema({
 
     applyingFor:{
         type:String,
-        enum:["doctor" , "lab_staff"],
+        enum:["doctor" , "lab staff"],
         required:true
     },
     status:{

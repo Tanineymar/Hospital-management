@@ -15,7 +15,7 @@ const applicationValidation = [
     
     body("applyingFor")
     .notEmpty().withMessage("Applying for is required.")
-    .isIn(["doctor",  "lab_staff"]).withMessage("Must be a doctor or lab staff"),
+    .isIn(["doctor",  "lab staff"]).withMessage("Must be a doctor or lab staff"),
 
     // Doctor fields
     body("specialization")
@@ -34,7 +34,7 @@ const applicationValidation = [
     // lab staff
 
     body("department")
-    .if(body("applyingFor").equals("lab_staff"))
+    .if(body("applyingFor").equals("lab staff"))
         .notEmpty().withMessage("Department is required for lab staff."),
 
 
