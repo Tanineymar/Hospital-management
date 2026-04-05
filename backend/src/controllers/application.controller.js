@@ -17,19 +17,46 @@ async function applicationController(req, res) {
 
         if (isPending) {
             return res.status(400).json({
-                message: "You application is pending. Please wait for admin review."
+                message: "You application is already pending. Please wait for admin review."
             })
         }
 
-        const application = await applicationModel.create({
-            user: req.user._id,
-            applyingFor,
-            specialization,
-            licenseNumber,
-            qualification,
-            department,
+        const alreadyApplied = await applicationModel.findOne({
+            user:req.user._id,
+            applyingFor:["doctor" , "lab_staff"]
+        })
 
-        });
+        if(alreadyApplied){
+            return res.status(400).json({
+                message:`You already applied for ${applyingFor}`
+            })
+        }
+
+         let applicationData = {
+      user:        req.user._id,
+      applyingFor,
+    };
+
+    if (applyingFor === 'doctor') {
+      applicationData = {
+        ...applicationData,
+        specialization:  specialization,
+        licenseNumber:   licenseNumber,
+        qualification:   qualification,
+     
+      };
+    }
+        
+
+    if (applyingFor === 'lab_staff') {
+      applicationData = {
+        ...applicationData,
+        department:   department,
+        licenseNumber: licenseNumber,
+      };
+    }
+
+        const application = await applicationModel.create(applicationData);
 
         const populatedApplication = await applicationModel
         .findById(application._id)
@@ -49,4 +76,4 @@ async function applicationController(req, res) {
 }
 
 
-export default { applicationController }
+export default  applicationController 
