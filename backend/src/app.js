@@ -17,8 +17,10 @@ app.use('/api' , applicationRouter)
 // ADMIN pending applications
 app.use('/api', adminRouter)
 
-// ADMIN approve 
+// ADMIN approve / reject
 app.use("/api" , adminRouter)
+app.use("/api" , adminRouter)
+
 
 
 

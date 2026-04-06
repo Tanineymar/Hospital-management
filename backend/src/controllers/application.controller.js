@@ -13,7 +13,7 @@ async function applicationController(req, res) {
         const isPending = await applicationModel.findOne({
             user: req.user._id,
             status: 'pending'
-        })
+        }) 
 
         if (isPending) {
             return res.status(400).json({
