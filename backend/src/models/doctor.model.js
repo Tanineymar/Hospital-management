@@ -1,39 +1,34 @@
 import mongoose from 'mongoose'
 
 const slotSchema = new mongoose.Schema({
-    day:{
-        type:String,
-        enum:['Mon', "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        required:[true , "Day is required."]
-    },
-    startTime:{
-        type:String
-    },
-    endTime:{
-        type:String
-    },
-    isAvailable:{
-        type:Boolean,
-        default:true
+    day: {
+        type: String,
+        enum: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
     }
+    ,
+    startTime: { type: String },
+    endTime: { type: String },
+    isAvailabe: { type: Boolean, default: true }
 })
 
 const doctorSchema = new mongoose.Schema({
-    user:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"User",
-        required:true,
+     user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+        unique: true
     },
-    specializatoin :{type: String , required: true},
-    licenseNumber:     { type: String, required: true },
-    qualification:     { type: String },
-    experience:        { type: Number },
-    consultationFee:   { type: Number, default: 0 },
-    about:             { type: String },
-    slots:             [slotSchema],
+    specialization: { type: String,},
+    licenseNumber: { type: String,  },
+    qualification: { type: String },
+    experience: { type: Number },
+    consultationFee: { type: Number, default: 0 },
+    about: { type: String },
+    slots: [slotSchema],
+    isAvailable:{type:Boolean , default: false},
     isProfileComplete: { type: Boolean, default: false },
 }, {timestamps: true})
 
-const doctorModel = mongoose.model('Doctor' , doctorSchema)
+const  doctorModel = mongoose.model("Doctor" , doctorSchema)
 
 export default doctorModel

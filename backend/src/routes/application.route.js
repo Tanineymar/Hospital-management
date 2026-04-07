@@ -5,6 +5,6 @@ import verifyToken from '../middleware/verifyToken.js'
 
 const router = express.Router()
 
-router.post('/apply' , verifyToken , applicationValidation , applicationController )
+router.post('/apply' , verifyToken , applicationValidation,applicationController )
 
 export default router
