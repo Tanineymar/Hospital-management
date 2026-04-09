@@ -41,7 +41,7 @@ async function updateDoctorProfile (req , res){
             })
         } 
 
-        const{specialization, licenseNumber, qualification, experience, about, slots, consultationFee} = req.body
+        const{specialization, licenseNumber, qualification, experience, about, slots, consultationFee , isAvailable} = req.body
 
         if(!specialization || !licenseNumber || !qualification || !experience || !about || !slots || !consultationFee ||!Array.isArray(slots) ||
             slots.length === 0){
@@ -63,6 +63,7 @@ async function updateDoctorProfile (req , res){
                     about,
                     slots,
                     consultationFee,
+                    isAvailable,
                     isProfileComplete:true
                 })
             }else{
@@ -72,6 +73,7 @@ async function updateDoctorProfile (req , res){
                doctor.about = about;
                doctor.slots= slots;
                doctor.consultationFee = consultationFee
+               doctor.isAvailable = isAvailable
                doctor.isProfileComplete = true
 
                await doctor.save()

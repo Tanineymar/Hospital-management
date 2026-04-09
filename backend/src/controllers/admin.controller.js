@@ -1,7 +1,6 @@
 import userModel from "../models/user.model.js";
 import applicationModel from "../models/application.model.js";
-import app from "../app.js";
-import { application } from "express";
+
 
 
 // fetched pendind application

@@ -20,11 +20,15 @@ const applicationSchema = new mongoose.Schema({
 
     // Doctor feild
     specialization: { type: String, },
-    licenseNumber: { type: String,  },
+    licenseNumber: { type: String, },
     qualification: { type: String },
 
     // Lab staff feild
-    department: { type: String },
+    department: {
+        type: String,
+        enum: ['Pathology', 'Radiology', 'Microbiology', 'Biochemestry', 'Cardiology', 'Histopathology'],
+        required: true
+    },
 
 }, { timestamps: true })
 

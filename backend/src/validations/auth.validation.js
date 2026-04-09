@@ -19,7 +19,7 @@ const signupValidation = [
 
     body("email")
     .notEmpty().withMessage("Email is required.")
-    .isEmail().withMessage("Password must be 6 characters long."),
+    .isEmail().withMessage("Email address is incorrect."),
 
     body("password")
     .notEmpty().withMessage("Password is required.")

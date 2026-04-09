@@ -15,6 +15,7 @@ async function applicationController(req, res) {
             status: 'pending'
         }) 
 
+
         if (isPending) {
             return res.status(400).json({
                 message: "You application is already pending. Please wait for admin review."
@@ -74,6 +75,5 @@ async function applicationController(req, res) {
         })
     }
 }
-
 
 export default applicationController 
