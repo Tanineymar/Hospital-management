@@ -9,4 +9,5 @@ router.get('/applications/pending' , verifyToken , adminController.getPendingApp
 router.patch('/applications/:id/approve' , verifyToken , adminController.approveApplication)
 router.patch('/applications/:id/reject' , verifyToken , adminController.rejectApplication)
 
+
 export default router

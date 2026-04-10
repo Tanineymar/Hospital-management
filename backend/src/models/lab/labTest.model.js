@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 const labTestSchema = new mongoose.Schema({
-    Testname:{
+    testName:{
         type:String,
         islength:{min:3},
         required:true,
