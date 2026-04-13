@@ -27,7 +27,7 @@ const applicationSchema = new mongoose.Schema({
     department: {
         type: String,
         enum: ['Pathology', 'Radiology', 'Microbiology', 'Biochemestry', 'Cardiology', 'Histopathology'],
-        required: true
+        
     },
 
 }, { timestamps: true })

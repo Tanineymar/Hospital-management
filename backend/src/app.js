@@ -2,9 +2,9 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 import authRouter from './routes/auth.route.js'
 import applicationRouter from './routes/application.route.js'
-import adminRouter from './routes/admin routes/admin.route.js'
-import doctorProfileRouter from './routes/doctor routes/doctor.routes.js'
-import labTest from './routes/admin routes/labTest.route.js'
+import adminRouter from './routes/admin/application.route.js'
+import doctorProfileRouter from './routes/doctor/doctor.routes.js'
+import labTest from './routes/admin/labTest.route.js'
 const app = express()
 
 app.use(express.json())
