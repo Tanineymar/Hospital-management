@@ -5,5 +5,6 @@ const router =  express.Router()
 router.post('/create' , labTest.createTest)
 router.get('/' , labTest.getTests)
 router.patch('/update/:id' , labTest.updateTest)
+router.delete('/delete/:id' , labTest.deleteLabTest)
 
 export default router

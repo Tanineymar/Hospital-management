@@ -27,6 +27,28 @@ async function createTest(req ,res) {
     
 }
 
+// PATIENT SEES ALL ACTIVE TEST
+
+async function getTests(req , res) {
+    try {
+        const filter = {isActive :true}
+        if(req.query.department) filter.department = req.query.department;
+        const tests =  await labTestModel.find(filter)
+        
+        return res.status(201).json({
+            message:"Test fetched successfully.",
+            tests
+        })
+    } catch (error) {
+         return res.status(500).json({
+            message:"Test fetched Unsuccessful.",
+            error: error.message
+        })
+    }    
+}
+
+// UPDATE LAB TEST CARD
+
 async function updateTest(req , res){
     try {
         const {id} =  req.params;
@@ -57,24 +79,24 @@ async function updateTest(req , res){
     }
 }
 
-// PATIENT SEES ALL ACTIVE TEST
-
-async function getTests(req , res) {
+//DELETE LAB TEST CARD
+async function deleteLabTest(req , res){
     try {
-        const filter = {isActive :true}
-        if(req.query.department) filter.department = req.query.department;
-        const tests =  await labTestModel.find(filter)
-        
-        return res.status(201).json({
-            message:"Test fetched successfully.",
-            tests
+        const{id}= req.params
+        const deleteTest = await labTestModel.findByIdAndDelete(id)
+
+        return res.status(200).json({
+            message:"Lab test deleted successfully",
+            deleteTest
         })
     } catch (error) {
-         return res.status(500).json({
-            message:"Test fetched Unsuccessful.",
+        return res.status(500).json({
+            message:"Failed to delete lab test",
             error: error.message
         })
-    }    
+    }
+    
 }
 
-export default {createTest , getTests , updateTest}
+
+export default {createTest , getTests , updateTest , deleteLabTest}
