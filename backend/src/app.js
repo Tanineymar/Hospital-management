@@ -5,6 +5,7 @@ import applicationRouter from './routes/application.route.js'
 import adminRouter from './routes/admin/application.route.js'
 import doctorProfileRouter from './routes/doctor/doctor.routes.js'
 import labTest from './routes/admin/labTest.route.js'
+import bookTest from './routes/labOrder.route.js'
 const app = express()
 
 app.use(express.json())
@@ -12,6 +13,7 @@ app.use(cookieParser())
 
 // signup /login 
 app.use('/api/auth' , authRouter)
+app.use('/api/lab-orders' , bookTest)
 
 // doctor / lab staff
 app.use('/api' , applicationRouter)
