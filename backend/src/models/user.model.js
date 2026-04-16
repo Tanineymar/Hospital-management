@@ -30,7 +30,12 @@ const userSchema = new mongoose.Schema({
         type:String,
         enum:["active" , 'pending' ,'rejected'],
         default:"active"
-    }
+    },
+    department:{
+    type: String,
+    enum: ['Pathology', 'Radiology', 'Microbiology', 'Biochemestry', 'Cardiology', 'Histopathology'],
+    default:null
+}
 
 },{timestamps:true})
 

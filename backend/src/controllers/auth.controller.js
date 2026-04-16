@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 // Register
 async function userSignupController(req, res) {
     try {
-        const { name, email, password, role = "patient" } = req.body
+        const { name, email, password, role = "patient", department } = req.body
 
         const isUserExist = await userModel.findOne({ email: email })
         if (isUserExist) {
@@ -15,10 +15,11 @@ async function userSignupController(req, res) {
             name,
             email,
             password,
-            role
+            role,
+            department
         })
 
-        const token = jwt.sign({ userId: user._id, role: user.role , name:user.name }, process.env.JWT_SECRET, { expiresIn: '10d' })
+        const token = jwt.sign({ userId: user._id, role: user.role , name:user.name , department:user.department }, process.env.JWT_SECRET, { expiresIn: '10d' })
 
         res.cookie("token", token, {
             httpOnly: true,
@@ -32,7 +33,8 @@ async function userSignupController(req, res) {
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                role: user.role
+                role: user.role,
+                department: user.department
             }
         })
     } catch (error) {
@@ -61,11 +63,11 @@ async function userLoginController(req, res) {
         const isvalidPassword = await user.comparePassword(password)
         if (!isvalidPassword) {
             return res.status(401).json({
-                message: "Email or password is Invalid"
+                message: "Password is Invalid"
             })
         }
 
-        const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "10d" })
+        const token = jwt.sign({ userId: user._id, role: user.role, department: user.department }, process.env.JWT_SECRET, { expiresIn: "10d" })
 
         res.cookie("token", token, {
             httpOnly: true,
@@ -80,7 +82,8 @@ async function userLoginController(req, res) {
                 id: user._id,
                 name:user.name,
                 email:user.email,
-                role:user.role
+                role:user.role,
+                department: user.department
             }
         })
 

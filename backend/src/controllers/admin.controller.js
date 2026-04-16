@@ -30,6 +30,8 @@ async function getPendingApplications(req, res) {
 
 async function approveApplication(req, res) {
     try {
+       const department = req.body?.department
+
         const application = await applicationModel
             .findById(req.params.id)
             .populate('user')
@@ -48,11 +50,13 @@ async function approveApplication(req, res) {
         application.status = 'approved'
         await application.save()
 
-        await userModel.findByIdAndUpdate(application.user._id,
-            {
-                role: application.applyingFor
-            }
-        )
+         await userModel.findByIdAndUpdate(application.user._id, {
+            role: application.applyingFor,
+            department: department,
+            status: "active"
+        })
+
+     
 
         res.status(200).json({
             message: `${application.user.name} approved as ${application.applyingFor}. They must re-login`
