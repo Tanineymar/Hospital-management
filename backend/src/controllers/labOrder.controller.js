@@ -71,7 +71,7 @@ async function getMyOrders(req, res) {
 
 async function getDepartmentOrders(req, res) {
     try {
-          console.log("USER:", req.user);
+          
         if (!req.user || !req.user.department) {
             return res.status(401).json({ message: "Unauthorized or no department" });
         }
@@ -93,5 +93,41 @@ async function getDepartmentOrders(req, res) {
     }
 }
 
+// lab Staff update status of lab orders
 
-export default { placeOrder, getMyOrders , getDepartmentOrders }
+const VALID_STATUS = ['pending', 'processing', 'completed', 'processed']
+
+async function updateOrderStatus(req , res) {
+    try {
+        const {status} = req.body;
+        if(!status || !VALID_STATUS.includes(status)){
+            return res.status(400).json({
+                message:"Invalid or missing status"
+            })
+        }
+
+        const order = await labOrderModel.findByIdAndUpdate(
+            {_id: req.params.id , department: req.user.department},
+            {status},
+            {new: true}
+        )
+
+        if(!order){
+            return res.status(404).json({
+                message:"Order not found or not your department"
+            })
+        }
+
+        res.status(200).json({
+            message:"Status updated sucessfully",
+            order
+        })
+    } catch (error) {
+        res.status(500).json({
+            message:"Status not updated successfully",
+            error: error.message
+        })
+    }
+}
+
+export default { placeOrder, getMyOrders , getDepartmentOrders, updateOrderStatus }

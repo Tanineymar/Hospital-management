@@ -10,6 +10,7 @@ router.get('/my' , verifyToken , Order.getMyOrders)
 
 // lab staff
 router.get('/department', verifyToken , Order.getDepartmentOrders)
+router.patch('/status/:id' , verifyToken , Order.updateOrderStatus)
 
 
 export default router
