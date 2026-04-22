@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 const labResultSchema = new mongoose.Schema({
-    Order:{
+    order:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"labOrder",
         required:true
@@ -15,6 +15,9 @@ const labResultSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    remarks:{
+        type: String,
+    }
     
 },{timestamps:true})
 

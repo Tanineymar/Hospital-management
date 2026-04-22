@@ -1,6 +1,6 @@
 import labOrderModel from "../models/lab/labOrder.model.js";
 import labTestModel from "../models/lab/labTest.model.js";
-
+import labResultModel from "../models/lab/labResult.model.js";
 
 
 // Patient order lab test
@@ -53,10 +53,23 @@ async function getMyOrders(req, res) {
         const orders = await labOrderModel
             .find({ patient: req.user._id })
             .populate("tests", "testName department price")
+        
+        const orderWithResults = await Promise.all(
+            orders.map(async(order)=>{
+                const orderObj = order.toObject();
+                if(order.status === 'completed'){
+                    const result = await labResultModel.findOne({order: order._id})
+                    .populate('uploadedBy', 'name')
+                    orderObj.result = result || null
+                }
+                return orderObj
+            })
+        )      
+
 
         res.status(200).json({
             message: "Orders fetched successfullty",
-            orders
+            orders: orderWithResults
         })
     } catch (error) {
         res.status(500).json({
