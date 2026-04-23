@@ -6,6 +6,7 @@ import adminRouter from './routes/admin/application.route.js'
 import doctorProfileRouter from './routes/doctor/doctor.routes.js'
 import labTest from './routes/admin/labTest.route.js'
 import bookTest from './routes/labOrder.route.js'
+import doctorList from './routes/doctor.route.js'
 const app = express()
 
 app.use(express.json())
@@ -31,6 +32,7 @@ app.use("/api" , adminRouter)
 // ADMIN create lab test
 app.use('/api/lab-tests' , labTest)
 
+app.use('/api' , doctorList)
 
 
 

@@ -8,7 +8,7 @@ const slotSchema = new mongoose.Schema({
     ,
     startTime: { type: String },
     endTime: { type: String },
-    isAvailabe: { type: Boolean, default: true }
+    isAvailable: { type: Boolean, default: true }
 })
 
 const doctorSchema = new mongoose.Schema({
