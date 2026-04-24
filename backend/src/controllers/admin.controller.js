@@ -15,7 +15,8 @@ async function getPendingApplications(req, res) {
 
         res.status(200).json({
             message: "pending applications fetched successfully.",
-            count: applications.length, applications
+            count: applications.length, 
+            applications
         })
     } catch (error) {
         res.status(500).json({

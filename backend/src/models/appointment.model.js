@@ -18,6 +18,10 @@ const appointmentSchema = new mongoose.Schema({
     date:{
         type:Date,
         required:true
+    },
+    isRejected:{
+        type:Boolean,
+        default:false
     }
 },{timestamps:true})
 
