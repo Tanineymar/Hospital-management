@@ -1,3 +1,7 @@
+import dotenv from 'dotenv'
+
+dotenv.config();
+
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import authRouter from './routes/auth.route.js'
@@ -7,6 +11,7 @@ import doctorProfileRouter from './routes/doctor/doctor.routes.js'
 import labTest from './routes/admin/labTest.route.js'
 import bookTest from './routes/labOrder.route.js'
 import doctorList from './routes/doctor.route.js'
+import paymentRoutes from './routes/payment.route.js'
 const app = express()
 
 app.use(express.json())
@@ -33,6 +38,9 @@ app.use("/api" , adminRouter)
 app.use('/api/lab-tests' , labTest)
 
 app.use('/api' , doctorList)
+
+// payment
+app.use('/api/payment' , paymentRoutes )
 
 
 

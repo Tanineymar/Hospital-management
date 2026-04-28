@@ -6,7 +6,7 @@ const paymentSchema = new mongoose.Schema({
         ref: "User",
         required:true
     },
-    refrenceId:{
+    referenceId:{
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },
@@ -15,7 +15,7 @@ const paymentSchema = new mongoose.Schema({
         required: true
     },
     razorpayOrderId: {type: String},
-    razorpayPaymentId: {type: string},
+    razorpayPaymentId: {type: String},
     status:{
         type: String,
         enum:["created" , "paid" , "failed"],
