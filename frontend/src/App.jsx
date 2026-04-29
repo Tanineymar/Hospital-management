@@ -1,8 +1,8 @@
-import Navbar from "./components/Navbar.jsx"
+import LandingPage from "./pages/Landing.jsx"
 function App() {
   return (
     <>
-    <Navbar/>
+    <LandingPage/>
     </>
     )
 }
