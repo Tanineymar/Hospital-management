@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react'
+import { act, useRef, useState } from 'react'
 import API from '../api/axios.js'
 import axios from 'axios'
 import { X } from "lucide-react"
 import AuthImg from '../assets/login.jpg'
+import toast from 'react-hot-toast'
 
 function AuthModal({ onClose, activeModal }) {
 
@@ -22,22 +23,37 @@ function AuthModal({ onClose, activeModal }) {
         return null
     }
 
+    // VALIDATION ERROR MESSAGE
+
+    const handleError = (error)=>{
+        const data =  error.response?.data
+
+        if(data?.error && Array.isArray(data.error)){
+            toast.error(data.error[0].msg)
+        }else if(data?.message){
+            toast.error(data.message)
+        }else{
+            toast.error("Something went wrong")
+        }
+    }
+
     // Register API
 
     const handleRegister = async (event) => {
         event.preventDefault()
         setLoading(true)
         try {
-            const response = await axios.post("/auth/signup", {
+            const response = await API.post("/auth/signup", {
                 name,
                 email: signEmail,
                 password: signPassword,
                 role: "patient"
             })
+            toast.success(response.data.message)
+            
             onClose()
         } catch (error) {
-            message: "Registration failed",
-                console.error(error)
+           handleError(error)
         } finally {
             setLoading(false)
         }
@@ -49,14 +65,16 @@ function AuthModal({ onClose, activeModal }) {
         event.preventDefault()
         setLoading(true)
         try {
-            const response = await axios.post('/auth/login', {
+            const response = await API.post('/auth/login', {
                 email: loginEmail,
                 password: loginPassword
             })
+            toast.success(response.data.message)
+            console.log(response.data)
             onClose()
         } catch (error) {
-            message: "Login failed",
-                console.log(error)
+            console.log(error.response?.data)
+            handleError(error)
         } finally {
             setLoading(false)
         }
@@ -80,7 +98,7 @@ function AuthModal({ onClose, activeModal }) {
 
                     <div className='w-full sm:w-1/2 p-8 flex flex-col' >
                         <h1 className='text-2xl font-bold text-blue-600 mb-1' >Medi<span className='text-teal-500'>Care</span></h1>
-                        <div className='flex border-b border-slate-100 mb-5 mt-4'>
+                        <div className='flex border-b border-slate-100 mb-1 mt-4'>
                             <button onClick={() => onClose("login")} className={`flex-1 pb-2.5 text-sm 
                                 font-semibold border-b-2 transition-all ${activeModal === "login" ? "border-blue-600 text-blue-600" : "border-transparent text-slate-400"}
                                 `}>
@@ -91,7 +109,63 @@ function AuthModal({ onClose, activeModal }) {
                                 Sign up
                             </button>
                         </div>
+                        {/* LOGIN */}
+                        {activeModal === "login" && (
+                            <form onSubmit={handleLogin} className='flex flex-col gap-3'>
+                                <p className='text-sm text-gray-600 mt-2 mb-1'>
+                                    Get access to your orders, lab tests & doctor consultations
+                                </p>
+                                <input type="email" placeholder='Enter Email' value={loginEmail}
+                                    className='w-full border border-gray-400 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600'
+                                    onChange={(event) => setLoginEmail(event.target.value)} />
 
+                                <input type={showPassword ? "text" : "password"} placeholder='Enter Password' value={loginPassword}
+                                    onChange={(event) => setLoginPassword(event.target.value)}
+                                    className="w-full border border-gray-400 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 pr-10"
+                                />
+
+                                <button type='submit'
+                                    className='w-full bg-blue-600 text-white p-3 rounded-lg font-medium text-sm flex items-center justify-center hover:bg-blue-700 transition-colors '>
+                                    Continue</button>
+                                <p className="text-sm text-gray-600 text-center mt-1">
+                                    New on Mediare? {" "}
+                                    <button
+                                        type="button"
+                                        onClick={() => onClose("signup")}
+                                        className="text-blue-600 font-semibold hover:underline">
+                                        Sign up
+                                    </button>
+                                </p>
+                            </form>
+                        )}
+
+                        {/* REGISTER */}
+                        {
+                            activeModal === 'signup' && (
+                                <form onSubmit={handleRegister} className='flex flex-col gap-3'>
+                                    <p className='text-sm text-gray-600 mt-2 mb-1'> Sign up to book appointments with doctors and lab tests seamlessly</p>
+
+                                    <input type="text" placeholder='Enter Name' value={name} 
+                                     onChange={(event)=>setName(event.target.value)}
+                                     className='w-full border border-gray-400 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600'
+                                    />
+                                    <input type="email" placeholder='Enter Email' value={signEmail} 
+                                     onChange={(event)=>setSignEmail(event.target.value)}
+                                     className='w-full border border-gray-400 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600'
+                                    />
+                                    <input type="password" placeholder='Enter Password' value={signPassword} 
+                                     onChange={(event)=>setSignPassword(event.target.value)}
+                                     className='w-full border border-gray-400 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600'
+                                    />
+                                    <button type='submit'className='w-full bg-blue-600 hover:bg-blue-700 text-white p-2.5 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-colors' >
+                                        Continue</button>
+                                    <p className='text-sm text-gray-600 text-center mt-1'>Already on Medicare? {""}
+                                        <button onClick={()=>onClose("login")}
+                                            className='text-blue-600 font-semibold hover:underline p'>Login</button>
+                                    </p>
+                                </form>
+                            )
+                        }
                     </div>
 
 
