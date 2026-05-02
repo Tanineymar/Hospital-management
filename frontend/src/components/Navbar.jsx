@@ -9,7 +9,7 @@ function Navbar() {
             <nav className="flex justify-between items-center px-8 py-4 border-b-olive-700 bg-white shadow-md  ">
                 <h1 className="text-xl font-bold text-blue-600">Medi<span className="text-teal-500">Care</span></h1>
 
-                <div className=" hiden md:flex items-center gap-7 text-slate-500 font-medium ">
+                <div className=" hiden md:flex items-center gap-7 text-gray-500 font-medium ">
                     <a href="#" className=" hover:text-blue-600 transition-colors">Home</a>
                     <a href="#" className=" hover:text-blue-600 transition-colors">Doctors</a>
                     <a href="#" className=" hover:text-blue-600 transition-colors">Lab Tests</a>
