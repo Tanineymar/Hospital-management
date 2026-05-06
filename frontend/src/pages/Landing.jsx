@@ -8,9 +8,7 @@ function LandingPage(){
         <div>
             <Navbar/>
             <Hero/>
-            <Services/>
-            
-            
+            <Services/>        
         </div>
         </>
     )
