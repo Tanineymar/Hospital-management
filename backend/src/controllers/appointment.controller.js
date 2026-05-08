@@ -10,7 +10,7 @@ async function getDoctors(req, res) {
             isAvailable: true,
             isProfileComplete: true
         }).populate('user', 'name email')
-            .select('specialization consultationFee slots experience qualification')
+            .select('specialization consultationFee slots experience qualification isAvailable')
 
         res.status(200).json({
             message: "Doctors fetched successfully",
@@ -30,7 +30,7 @@ async function getDoctorProfile(req, res) {
     try {
         const doctor = await doctorModel.findById(req.params.id)
             .populate("user", 'name email')
-            .select("specialization consultationFee slots experience qualification about")
+            .select("specialization consultationFee slots experience qualification about isAvailable")
 
         if (!doctor) {
             res.status(404).json({

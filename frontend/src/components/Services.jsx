@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
+
 const services = [
   {
     id: 1,
@@ -140,7 +141,7 @@ function ServiceCard({ service, index }) {
 
       <div className="flex items-center justify-between gap-3">
         <span className="text-xs font-semibold text-slate-400">{service.stats}</span>
-        <button className={`flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-semibold text-white shadow-md transition-all duration-200 active:scale-95 ${a.btn}`}>
+        <button  className={`flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-semibold text-white shadow-md transition-all duration-200 active:scale-95 ${a.btn}` }>
           {service.cta}
           <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
