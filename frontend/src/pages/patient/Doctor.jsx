@@ -1,6 +1,9 @@
 import { useEffect, useState, useRef } from "react"
 import API from "../../api/axios"
 import Navbar from "../../components/Navbar.jsx"
+import BookAppointment from "./BookAppointment.jsx"
+import { useNavigate } from "react-router-dom"
+
 
 // ─── HELPERS ──────────────────────────────────────────────
 const avatarGradients = [
@@ -21,6 +24,7 @@ function getInitials(name = "") {
 function DoctorCard({ doc, index }) {
     const ref = useRef(null)
     const [visible, setVisible] = useState(false)
+    const navigate = useNavigate();
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -112,7 +116,7 @@ function DoctorCard({ doc, index }) {
                     <button className="flex-1  rounded-xl border border-blue-200 bg-white  py-2.5 text-sm font-semibold text-blue-600 transition-all shadow-md shadow-blue-100 duration-200 hover:bg-blue-50 hover:border-blue-600">
                         View Profile
                     </button>
-                    <button className="flex-1 rounded-xl bg-blue-600 text-white text-sm font-semibold py-2.5 hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-md shadow-blue-100">
+                    <button onClick={() => navigate(`/book/${doc._id}`)} className="flex-1 rounded-xl bg-blue-600 text-white text-sm font-semibold py-2.5 hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-md shadow-blue-100">
                         Consult Now
                     </button>
                 </div>
