@@ -113,7 +113,7 @@ function DoctorCard({ doc, index }) {
                         {/* <p className="text-xl font-bold text-slate-800">₹{doc.consultationFee}</p> */}
                         <p className="text-xl font-extrabold text-slate-800">₹{doc.consultationFee}</p>
                     </div>
-                    <button className="flex-1  rounded-xl border border-blue-200 bg-white  py-2.5 text-sm font-semibold text-blue-600 transition-all shadow-md shadow-blue-100 duration-200 hover:bg-blue-50 hover:border-blue-600">
+                    <button onClick={()=>navigate(`/doctor/profile/${doc._id}`)} className="flex-1  rounded-xl border border-blue-200 bg-white  py-2.5 text-sm font-semibold text-blue-600 transition-all shadow-md shadow-blue-100 duration-200 hover:bg-blue-50 hover:border-blue-600">
                         View Profile
                     </button>
                     <button onClick={() => navigate(`/book/${doc._id}`)} className="flex-1 rounded-xl bg-blue-600 text-white text-sm font-semibold py-2.5 hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-md shadow-blue-100">

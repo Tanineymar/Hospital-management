@@ -209,7 +209,7 @@ function Labtest() {
             .then((res) => {
 
                 setLabtest(res.data.tests || [])
-
+                console.log(res.data.tests)
             })
             .catch((err) => {
                 console.log(err)
