@@ -30,6 +30,7 @@ function DoctorProfile() {
     const { doctorId } = useParams()
     const navigate = useNavigate()
     const [doctor, setDoctor] = useState(null)
+    const [selectedDay, setSelectedDay] = useState(0)
 
     useEffect(() => {
         API.get(`/doctor/profile/${doctorId}`)
@@ -47,12 +48,12 @@ function DoctorProfile() {
 
 
     return (
-        <div className="min-h-screen">
+        <div className="min-h-screen bg-[#f8faff] ">
             <Navbar />
-            <div className="max-w-3xl mx-auto px-4 md:px-8 py-10">
+            <div className="max-w-2xl mx-auto px-6 md:px-10 py-10">
 
                 <button onClick={() => navigate(-1)}
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-slate-700 mb-6 transition-colors"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 mb-6 transition-colors"
                 ><svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19 12H5m7-7l-7 7 7 7" />
                     </svg>Back to doctors</button>
@@ -129,15 +130,48 @@ function DoctorProfile() {
                 {/* About */}
                 <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 mb-4 ">
                     <p className="text-[11px] font-bold text-blue-600 tracking-widest uppercase mb-2">About</p>
-                    <p className="text-sm text-slate-700 leading-relaxed  ">{doctor?.about}</p>
+                    <p className="text-sm text-slate-700 leading-relaxed mb-5 ">{doctor?.about}</p>
+                    {/* <p className="text-[11px] font-bold text-blue-600 tracking-widest uppercase mb-2">Specialization</p>
+                    <div className="flex flex-wrap gap-2">
+                        <span className="text-sm text-slate-700 leading-relaxed mb-3">{doctor?.specialization}</span>
+                    </div>
+                    <div className="">
+                        <p className="text-[11px] font-bold text-blue-600 tracking-widest uppercase mb-3">Education</p>
+
+                    </div> */}
                 </div>
 
-                <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 mb-4 ">
-                    <p className="text-[11px] font-bold text-blue-600 tracking-widest uppercase mb-2">slots</p>
-                    <p>DAY</p>
-                    <span>{doctor?.slots.day}</span> 
-                    
-                </div>
+                 <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 mb-4">
+
+  <p className="text-[11px] font-bold text-blue-600 tracking-widest uppercase mb-3">
+    Doctor Availability
+  </p>
+
+  <div className="flex gap-2 flex-wrap">
+
+    {doctor?.slots?.map((slot, i) => (
+
+      <button
+        key={slot._id}
+        className={`text-sm font-semibold px-4 py-2 rounded-xl border-[1.5px] transition-all ${
+          slot.isAvailable
+            ? "border-blue-600 text-blue-600 bg-blue-50"
+            : "border-slate-100 text-slate-400 bg-slate-50 opacity-60"
+        }`}
+      >
+
+        <span className="block text-[10px] uppercase font-medium">
+          {slot.day}
+        </span>
+
+      </button>
+
+    ))}
+
+  </div>
+
+</div>
+                
 
                 
 
