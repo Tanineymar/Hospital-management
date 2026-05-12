@@ -119,7 +119,7 @@ function DoctorProfile() {
                         <div className="w-full sm:w-auto sm:text-right ">
                             <p className="text-sm text-slate-500 font-medium">Consultation Fee</p>
                             <p className="text-3xl font-extrabold text-slate-900">₹{doctor?.consultationFee}</p>
-                            <button 
+                            <button onClick={()=>navigate(`/book/${doctorId}`)}
                                 className="mt-8 w-full rounded-xl bg-blue-600 text-white text-sm font-semibold px-5 py-2.5 hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-md shadow-blue-100">
                                 Consult Now
                             </button>
