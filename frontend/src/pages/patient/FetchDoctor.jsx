@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react"
 import API from "../../api/axios"
 import Navbar from "../../components/Navbar.jsx"
-import BookAppointment from "./BookAppointment.jsx"
 import { useNavigate } from "react-router-dom"
 
 
@@ -139,9 +138,10 @@ function FetchDoctors() {
     return (
         <div className="min-h-screen bg-[#f8faff]">
             <Navbar />
+          
 
             <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-12">
-
+                
                 {/* Heading */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
                     <div>
@@ -162,6 +162,13 @@ function FetchDoctors() {
                         </svg>
                     </a>
                 </div>
+                  {
+    loading && (
+        <div className="flex justify-center items-center py-20">
+            <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+        </div>
+    )
+}
 
                 {/* Error */}
                 {!loading && error && (

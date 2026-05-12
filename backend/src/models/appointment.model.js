@@ -19,6 +19,10 @@ const appointmentSchema = new mongoose.Schema({
         type:Date,
         required:true
     },
+    reason:{
+        type:String,
+        maxlength:[100 ,]
+    },
     isRejected:{
         type:Boolean,
         default:false
