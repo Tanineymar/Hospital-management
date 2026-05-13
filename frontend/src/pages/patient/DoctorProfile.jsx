@@ -58,6 +58,8 @@ function DoctorProfile() {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19 12H5m7-7l-7 7 7 7" />
                     </svg>Back to doctors</button>
 
+                    <h1 className="text-2xl font-bold mb-6">Doctor <span className="text-blue-600">Profile</span></h1>
+
 
                 <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 mb-4">
 

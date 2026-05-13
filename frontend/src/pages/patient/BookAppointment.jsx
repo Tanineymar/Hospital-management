@@ -33,15 +33,16 @@ function BookAppointment() {
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
     const [days] = useState(getNext7Days)
-    const [selectedDayIdx , setSelectedDayIdx] = useState(0)
+    const [selectedDayIdx, setSelectedDayIdx] = useState(0)
 
     const TIME_SLOTS = [
-    "09:00 AM","09:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM","12:00 PM","12:30 PM",
-    "02:00 PM","02:30 PM","03:00 PM","03:30 PM",
-    "04:00 PM","04:30 PM","05:00 PM",
+        "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM",
+        "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM",
+        "04:00 PM", "04:30 PM", "05:00 PM",
     ]
 
-    const [selectedSlot , setSelectedSlot] = useState(null)
+    const [selectedSlot, setSelectedSlot] = useState(null)
+    const [reason, setReason] = useState("")
     useEffect(() => {
         API.get(`/doctor/profile/${doctorId}`)
             .then((res) => {
@@ -67,12 +68,42 @@ function BookAppointment() {
     ]
 
 
-     function getNext7Days(){
-        return Array.from({length: 7}, (_, i)=>{
+    function getNext7Days() {
+        return Array.from({ length: 7 }, (_, i) => {
             const date = new Date()
-            date.setDate(date.getDate()+ i)
+            date.setDate(date.getDate() + i)
             return date
         })
+    }
+
+    function formatDate(dateobj){
+        const year = dateobj.getFullYear()
+        const month = String(dateobj.getMonth() + 1).padStart(2 , "0")
+        const date = String (dateobj.getDate()).padStart(2 ,"0")
+
+        return `${date}-${month}-${year}`
+    }
+
+    async function handleBook() {
+        if(!selectedSlot){
+            alert("Please select time slot")
+            return
+        }
+
+        try {
+            const payload = {
+                doctorId,
+                slot: selectedSlot,
+                date: formatDate(days[selectedDayIdx]),
+                reason
+            }
+            // console.log(payload)
+            const response = await API.post("/appointment/book")
+            console.log(response.data)
+
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     return (
@@ -118,8 +149,8 @@ function BookAppointment() {
 
                             <span
                                 className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white ${doctor?.isAvailable
-                                        ? "bg-emerald-500"
-                                        : "bg-slate-300"
+                                    ? "bg-emerald-500"
+                                    : "bg-slate-300"
                                     }`}
                             />
                         </div>
@@ -176,59 +207,148 @@ function BookAppointment() {
                     <p className="text-sm font-semibold text-blue-600 uppercase mb-4">Select Date</p>
                     <div className="flex gap-2 overflow-x-auto pb-1">
                         {
-                        days.map((day , i)=>(
-                            <button key={i}
-                             onClick={()=>setSelectedDayIdx(i)}
-                             className={`shrink-0 flex flex-col items-center rounded-xl px-4 py-3 border text-sm font-medium transition-all
+                            days.map((day, i) => (
+                                <button key={i}
+                                    onClick={() => setSelectedDayIdx(i)}
+                                    className={`shrink-0 flex flex-col items-center rounded-xl px-4 py-3 border text-sm font-medium transition-all
                                     ${selectedDayIdx === i
-                                        ? "bg-blue-600 border-blue-600  text-white shadow-md shadow-blue-100"
-                                        : "border-slate-100 text-slate-500 hover:border-blue-200 hover:text-blue-600"
-                                    }`}>
+                                            ? "bg-blue-600 border-blue-600  text-white shadow-md shadow-blue-100"
+                                            : "border-slate-100 text-slate-500 hover:border-blue-200 hover:text-blue-600"
+                                        }`}>
 
 
-                                <span>{dayNames[day.getDay()]}</span>
-                                <span>{day.getDate()}</span>
-                                <span>{monthNames[day.getMonth()]}</span>
-                            </button>
-                        ))
-                    }
+                                    <span>{dayNames[day.getDay()]}</span>
+                                    <span>{day.getDate()}</span>
+                                    <span>{monthNames[day.getMonth()]}</span>
+                                </button>
+                            ))
+                        }
                     </div>
                 </div>
 
-                 <div className="bg-white border border-slate-200 rounded-2xl p-6 mb-6 shadow-sm hover:shadow-lg transition-all">
+                <div className="bg-white border border-slate-200 rounded-2xl p-6 mb-6 shadow-sm hover:shadow-lg transition-all">
                     <p className="text-sm font-semibold text-blue-600 uppercase mb-4">Select Time Slot</p>
                     <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 ">
                         {
-                            TIME_SLOTS.map((slot , i)=>(
+                            TIME_SLOTS.map((slot, i) => (
                                 <button key={i}
-                                onClick={()=>setSelectedSlot(slot)}
-                                 className={`rounded-xl py-3 text-sm font-semibold border transition-all
+                                    onClick={() => setSelectedSlot(slot)}
+                                    className={`rounded-xl py-3 text-sm font-semibold border transition-all
 
-                             ${
-                    selectedSlot === slot
-                        ? "bg-blue-600 text-white border-blue-600"
-                        : "border-slate-200 text-slate-600 hover:border-blue-300 hover:text-blue-600"
-                         }`}
-                                 >
+                             ${selectedSlot === slot
+                                            ? "bg-blue-600 text-white border-blue-600"
+                                            : "border-slate-200 text-slate-600 hover:border-blue-300 hover:text-blue-600"
+                                        }`}
+                                >
                                     {slot}
                                 </button>
                             ))
                         }
                     </div>
-                 </div>
+                </div>
 
-                 <div className="bg-white rounded-2xl border border-slate-100 p-5 mb-5 shadow-sm">
-                    <label className="text-sm font-semibold text-slate-700 block mb-3">
-                        Reason for Visit <span className="text-slate-400 font-normal">(optional)</span>
-                    </label>
+                <div className="bg-white rounded-2xl border border-slate-100 p-5 mb-10 shadow-sm hover:shadow-lg">
+                    <p className="text-sm font-semibold text-blue-600 mb-4 uppercase ">
+                        Reason for Visit <span className="text-slate-600 font-normal">(optional)</span>
+                    </p>
                     <textarea
                         rows={3}
-                        // value={reason}
-                        // onChange={(e) => setReason(e.target.value)}
+                        value={reason}
+                        onChange={(event) => setReason(event.target.value)}
                         placeholder="Briefly describe your symptoms or reason for the visit..."
-                        className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-700 placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all"
+                        className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all"
                     />
                 </div>
+
+                <div className="bg-gradient-to-br from-blue-800 to-slate-950 rounded-2xl p-6 mb-6 shadow-xl shadow-blue-950/10 border border-blue-900/40">
+
+                    {/* Heading */}
+                    <div className="flex items-center justify-between mb-5">
+                        <div>
+                            <p className="text-sm font-semibold tracking-wide uppercase text-blue-400">
+                                Booking Summary
+                            </p>
+                            <p className="text-xs text-slate-400 mt-1">
+                                Review your appointment details
+                            </p>
+                        </div>
+
+                        <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                            <svg
+                                className="w-5 h-5 text-blue-400"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M8 7V3m8 4V3m-9 8h10m-11 9h12a2 2 0 002-2V7a2 2 0 00-2-2H6a2 2 0 00-2 2v11a2 2 0 002 2z"
+                                />
+                            </svg>
+                        </div>
+                    </div>
+
+                    {/* Details */}
+                    <div className="space-y-4 text-sm">
+
+                        <div className="flex items-center justify-between">
+                            <span className="text-slate-400">Doctor</span>
+                            <span className="font-semibold text-white">
+                                {name}
+                            </span>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                            <span className="text-slate-400">Date</span>
+
+                            <span className="font-semibold text-white">
+                                {days[selectedDayIdx].getDate()}{" "}
+                                {monthNames[days[selectedDayIdx].getMonth()]}
+                            </span>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                            <span className="text-slate-400">Time</span>
+
+                            <span
+                                className={`font-semibold ${selectedSlot
+                                        ? "text-white"
+                                        : "text-slate-500"
+                                    }`}
+                            >
+                                {selectedSlot || "Not selected"}
+                            </span>
+                        </div>
+
+                        {/* Divider */}
+                        <div className="border-t border-slate-800 pt-4 flex items-center justify-between">
+
+                            <span className="text-slate-400">
+                                Consultation Fee
+                            </span>
+
+                            <span className="text-2xl font-extrabold text-blue-400">
+                                ₹{doctor?.consultationFee ?? "—"}
+                            </span>
+
+                        </div>
+
+                    </div>
+                </div>
+                
+<button
+    onClick={handleBook}
+    disabled={!selectedSlot}
+    className={`w-full rounded-2xl py-4 text-sm font-semibold transition-all shadow-lg ${
+        !selectedSlot
+            ? "bg-slate-200 text-slate-400 cursor-not-allowed"
+            : "bg-gradient-to-r from-blue-900 to-slate-950 text-white shadow-blue-200"
+    }`}
+>
+    Confirm Appointment
+</button>
             </div>
         </div>
     )
