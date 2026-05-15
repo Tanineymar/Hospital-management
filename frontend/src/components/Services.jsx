@@ -206,10 +206,10 @@ function Services() {
 
         {/* Category labels */}
          <div className="mt-5  grid grid-cols-2 lg:grid-cols-4 gap-5 px-1">
-          <p className="hidden lg:block text-center text-[11px] font-bold text-blue-300 uppercase tracking-widest col-span-1 lg:col-span-2">
+          <p className="hidden lg:block text-center text-[11px] font-bold text-blue-500 uppercase tracking-widest col-span-1 lg:col-span-2">
             ── Doctor Services ──
           </p>
-          <p className="hidden lg:block text-center text-[11px] font-bold text-teal-300 uppercase tracking-widest col-span-1 lg:col-span-2">
+          <p className="hidden lg:block text-center text-[11px] font-bold text-teal-500 uppercase tracking-widest col-span-1 lg:col-span-2">
             ── Lab Services ──
           </p>
         </div> 

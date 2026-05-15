@@ -21,7 +21,7 @@ const appointmentSchema = new mongoose.Schema({
     },
     reason:{
         type:String,
-        maxlength:[100 ,]
+        // maxlength: [10, "Reason must be at least 10 characters"]
     },
     isRejected:{
         type:Boolean,

@@ -55,6 +55,7 @@ async function getDoctorProfile(req, res) {
 
 async function bookAppointment(req , res) {
     try {
+        
         const{doctorId , slot , date, reason} = req.body
 
         const doctor = await doctorModel.findOne({
@@ -90,6 +91,7 @@ async function bookAppointment(req , res) {
             appointment
         })
     } catch (error) {
+        
         res.status(500).json({
             message:"Failed to book appointment",
             error: error.message

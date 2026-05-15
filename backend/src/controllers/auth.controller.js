@@ -28,6 +28,7 @@ async function userSignupController(req, res) {
         })
 
         res.status(201).json({
+            
             message: "Registred successfully",
             user: {
                 id: user._id,
@@ -77,6 +78,7 @@ async function userLoginController(req, res) {
         })
 
         res.status(200).json({
+            
             message:"Login successful",
             user:{
                 id: user._id,

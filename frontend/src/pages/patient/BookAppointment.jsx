@@ -81,8 +81,11 @@ function BookAppointment() {
         const month = String(dateobj.getMonth() + 1).padStart(2 , "0")
         const date = String (dateobj.getDate()).padStart(2 ,"0")
 
-        return `${date}-${month}-${year}`
+        return `${year}-${month}-${date}`
     }
+
+
+    
 
     async function handleBook() {
         if(!selectedSlot){
@@ -97,12 +100,13 @@ function BookAppointment() {
                 date: formatDate(days[selectedDayIdx]),
                 reason
             }
-            // console.log(payload)
-            const response = await API.post("/appointment/book")
+            console.log(payload)
+            const response = await API.post("/appointment/book", payload)
+
             console.log(response.data)
 
         } catch (error) {
-            console.error(error)
+            console.log(error)
         }
     }
 
@@ -343,7 +347,7 @@ function BookAppointment() {
     disabled={!selectedSlot}
     className={`w-full rounded-2xl py-4 text-sm font-semibold transition-all shadow-lg ${
         !selectedSlot
-            ? "bg-slate-200 text-slate-400 cursor-not-allowed"
+            ? "bg-slate-200 text-slate-500 cursor-not-allowed"
             : "bg-gradient-to-r from-blue-900 to-slate-950 text-white shadow-blue-200"
     }`}
 >

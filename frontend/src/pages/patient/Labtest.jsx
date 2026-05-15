@@ -225,7 +225,7 @@ function Labtest() {
             <Navbar />
 
             {/* Hero Section */}
-            <div className="relative bg-blue-950 overflow-hidden">
+            <div className="relative bg-gradient-to-br from-blue-800 to-slate-950 overflow-hidden">
 
                 <div
                     className="absolute inset-0 opacity-10"

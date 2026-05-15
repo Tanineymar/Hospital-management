@@ -106,8 +106,8 @@ function Navbar() {
                         />
                     </NavLink>
 
-                    <NavLink to="/contact" className={navLinkClass}>
-                        Contact
+                    <NavLink to="/appointments/my" className={navLinkClass}>
+                        My appointments
                         <span
                             className="
                             absolute left-1/2 bottom-0 h-[2px] w-0
