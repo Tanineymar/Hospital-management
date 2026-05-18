@@ -5,7 +5,7 @@ import LabTests from "./pages/patient/Labtest.jsx"
 import BookAppointment from "./pages/patient/BookAppointment.jsx"
 import DoctorProfile from "./pages/patient/DoctorProfile.jsx"
 import MyBookings from "./pages/patient/Appointments.jsx"
-
+import DoctorDashboard from "./pages/doctor/DoctorDashboard.jsx"
 function App() {
   return (
     <>
@@ -16,6 +16,7 @@ function App() {
        <Route path="/book/:doctorId" element={<BookAppointment/>}/>
        <Route path="/doctor/profile/:doctorId" element={<DoctorProfile/>} />
        <Route path="/appointments/my" element={<MyBookings/>}/> 
+       <Route path="/doctor/dashboard" element={<DoctorDashboard/>}/>
     </Routes>
     </>
     )

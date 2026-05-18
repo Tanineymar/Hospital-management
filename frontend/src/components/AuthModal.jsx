@@ -1,6 +1,5 @@
-import { act, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import API from '../api/axios.js'
-import axios from 'axios'
 import { X } from "lucide-react"
 import AuthImg from '../assets/login.jpg'
 import toast from 'react-hot-toast'
@@ -45,8 +44,8 @@ function AuthModal({ onClose, activeModal }) {
         try {
             const response = await API.post("/auth/signup", {
                 name,
-                email: signEmail,
-                password: signPassword,
+                email: signEmail.trim(),
+                password: signPassword.trim(),
                 role: "patient"
             })
             toast.success(response.data.message)
@@ -66,8 +65,8 @@ function AuthModal({ onClose, activeModal }) {
         setLoading(true)
         try {
             const response = await API.post('/auth/login', {
-                email: loginEmail,
-                password: loginPassword
+                email: loginEmail.trim(),
+                password: loginPassword.trim()
             })
             toast.success(response.data.message)
             console.log(response.data)

@@ -4,7 +4,7 @@ import authValidation from '../validations/auth.validation.js'
 import verifyToken from '../middleware/verifyToken.js'
 const router = express.Router()
 
-router.post('/signup', authValidation.signupValidation ,verifyToken, authController.userSignupController )
-router.post('/login' ,authValidation.loginValidation ,verifyToken,  authController.userLoginController)
+router.post('/signup', authValidation.signupValidation , authController.userSignupController )
+router.post('/login' ,authValidation.loginValidation ,  authController.userLoginController)
 
 export default router

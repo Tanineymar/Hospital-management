@@ -19,7 +19,7 @@ async function userSignupController(req, res) {
             department
         })
 
-        const token = jwt.sign({ userId: user._id, role: user.role , name:user.name , department:user.department }, process.env.JWT_SECRET, { expiresIn: '10d' })
+        const token = jwt.sign({ userId: user._id, role: user.role, name: user.name, department: user.department }, process.env.JWT_SECRET, { expiresIn: '10d' })
 
         res.cookie("token", token, {
             httpOnly: true,
@@ -28,7 +28,7 @@ async function userSignupController(req, res) {
         })
 
         res.status(201).json({
-            
+
             message: "Registred successfully",
             user: {
                 id: user._id,
@@ -51,6 +51,7 @@ async function userSignupController(req, res) {
 
 async function userLoginController(req, res) {
     try {
+
         const { email, password } = req.body
 
         const user = await userModel.findOne({ email }).select('+password')
@@ -78,24 +79,24 @@ async function userLoginController(req, res) {
         })
 
         res.status(200).json({
-            
-            message:"Login successful",
-            user:{
+
+            message: "Login successful",
+            user: {
                 id: user._id,
-                name:user.name,
-                email:user.email,
-                role:user.role,
+                name: user.name,
+                email: user.email,
+                role: user.role,
                 department: user.department
             }
         })
 
     } catch (error) {
-        console.log("Error" , error)
+        console.log("Error", error.response?.data)
         res.status(500).json({
-            message:"Login failed"
+            message: "Login failed"
         })
     }
 
 }
 
-export default { userSignupController  , userLoginController}
+export default { userSignupController, userLoginController }
