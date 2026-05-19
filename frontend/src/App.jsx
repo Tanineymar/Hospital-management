@@ -6,6 +6,9 @@ import BookAppointment from "./pages/patient/BookAppointment.jsx"
 import DoctorProfile from "./pages/patient/DoctorProfile.jsx"
 import MyBookings from "./pages/patient/Appointments.jsx"
 import DoctorDashboard from "./pages/doctor/DoctorDashboard.jsx"
+import Profile from "./pages/doctor/Profile.jsx"
+import Overview from "./pages/doctor/Overview.jsx"
+import Appointments from "./pages/doctor/Appointments.jsx"
 function App() {
   return (
     <>
@@ -16,8 +19,16 @@ function App() {
        <Route path="/book/:doctorId" element={<BookAppointment/>}/>
        <Route path="/doctor/profile/:doctorId" element={<DoctorProfile/>} />
        <Route path="/appointments/my" element={<MyBookings/>}/> 
-       <Route path="/doctor/dashboard" element={<DoctorDashboard/>}/>
+      
+      {/* DOCTOR DASHBOARD */}
+    <Route path="/doctor" element={<DoctorDashboard/>}>
+      <Route path="myprofile" element={<Profile/>}/>
+      <Route path="dashboard" element={<Overview/>}/>
+      <Route path="appointments" element={<Appointments/>}/>
+    </Route>
+       
     </Routes>
+    
     </>
     )
 }

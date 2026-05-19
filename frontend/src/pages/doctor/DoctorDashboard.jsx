@@ -1,22 +1,19 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Sidebar from "./Sidebar.jsx"
-import API from "../../api/axios.js"
+import { Outlet } from "react-router-dom"
 
 function DoctorDashboard(){
-    const [appointments , setAppointments] =useState()
-
-    useEffect(()=>{
-        API.get('/appointments/doctor')
-        .then((res)=>{
-            console.log(res.data)
-            setAppointments(res.data || [])
-        })
-    },[])
+    const [sidebarOpen , setSidebarOpen] = useState(true)
     return(
-        <div>
-            <Sidebar/>
+        <div className=" flex min-h-screen">
+            <Sidebar
+             sidebarOpen={sidebarOpen}
+             setSidebarOpen={setSidebarOpen}
+            />
+            <main className="flex-1 p-6 bg-slate-100">
+                <Outlet/>
+            </main>
         </div>
     )
 }
-
 export default DoctorDashboard
