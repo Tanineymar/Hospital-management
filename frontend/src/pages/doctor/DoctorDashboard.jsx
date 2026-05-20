@@ -10,7 +10,12 @@ function DoctorDashboard(){
              sidebarOpen={sidebarOpen}
              setSidebarOpen={setSidebarOpen}
             />
-            <main className="flex-1 p-6 bg-slate-100">
+            <main className={`
+            flex-1 p-6 overflow-y-auto h-screen
+            transition-all duration-300
+
+            ${sidebarOpen ? "ml-64" : "ml-20"}
+        `}>
                 <Outlet/>
             </main>
         </div>

@@ -44,7 +44,8 @@ function Sidebar({
 }) {
     return (
         <aside className={`${sidebarOpen ? "w-64" : "w-20"}
-         bg-white h-screen border-r border-slate-300
+        fixed left-0 top-0 h-screen
+         bg-white border-r border-slate-300
          flex flex-col shrink-0 
          transition-all duration-300
          shadow-lg
