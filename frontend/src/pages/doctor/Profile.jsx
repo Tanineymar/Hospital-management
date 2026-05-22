@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 function Field({ icon: Icon, label, value, name, editing, onChange, type = "text", textarea = false }) {
   return (
     <div>
-      <label className='flex items-center gap-2 text-xs font-semibold text-slate-500 mb-2'>
+      <label className='flex items-center gap-2 text-xs font-semibold text-slate-600 mb-2'>
         <Icon size={14} />
         {label}
       </label>
@@ -21,7 +21,7 @@ function Field({ icon: Icon, label, value, name, editing, onChange, type = "text
               name={name}
               value={value}
               onChange={onChange}
-              className='w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-blue-500 resize-none'
+              className='w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-blue-500 resize-none '
             />
           ) : (
             <input
@@ -47,6 +47,7 @@ function Profile() {
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
   const [editing, setEditing] = useState(false)
+  const [saving , setSaving] = useState(false)
 
 
   const [form, setForm] = useState({
@@ -55,6 +56,7 @@ function Profile() {
     qualification: "",
     experience: "",
     consultationFee: "",
+    licenseNumber:"",
     about: "",
     isAvailable: false
   })
@@ -69,6 +71,7 @@ function Profile() {
         setForm({
           name: doctor.user?.name || "",
           specialization: doctor.specialization || "",
+          qualification: doctor.qualification || "",
           experience: doctor.experience || "",
           consultationFee: doctor.consultationFee || "",
           licenseNumber: doctor.licenseNumber || "",
@@ -79,6 +82,7 @@ function Profile() {
       })
       .catch((error) => {
         console.log(error)
+      
       })
       .finally(() => {
         setLoading(false)
@@ -91,6 +95,42 @@ function Profile() {
       [event.target.name]: event.target.value
     }))
 
+  }
+
+  async function handleSave() {
+    try {
+      setSaving(true)
+      const res = await API.patch("/doctor/profile/update",{
+        ...form,
+        experience: Number(form.experience),
+        consultationFee: Number(form.consultationFee)
+      })
+      const updatedDoctor = res.data.doctor
+
+      setProfile(updatedDoctor)
+
+      setForm({
+        name: updatedDoctor.user?.name || "",
+        specialization: updatedDoctor.specialization || "",
+        qualification: updatedDoctor.qualification || "",
+        experience: updatedDoctor.experience || "",
+        consultationFee: updatedDoctor.consultationFee || "",
+        licenseNumber: updatedDoctor.licenseNumber || "",
+        about: updatedDoctor.about || "",
+        isAvailable: updatedDoctor.isAvailable || false
+      })
+
+      setEditing(false)
+
+      console.log(updatedDoctor)
+
+    } catch (error) {
+      console.log(error)
+      console.log(error.response.data)
+    }finally{
+      setSaving(false)
+      alert("Profile update successfully")
+    }
   }
 
   if (loading) {
@@ -106,13 +146,78 @@ function Profile() {
 
       <div className='flex justify-between items-center'>
         <div>
-        <h1 className='text-2xl font-bold text-slate-800'>My profile</h1>
-        <p className='text-sm text-slate-500'>View your professional details</p>
-      </div>
+          <h1 className='text-2xl font-bold text-slate-800'>My profile</h1>
+          <p className='text-sm text-slate-500'>View your professional details</p>
+        </div>
 
-      <button onClick={()=>setEditing(true)} 
-      className='px-4 py-2 bg-blue-600 text-white rounded-xl flex items-center gap-2'
-      >< Edit3 size={16}/> Edit Profile</button>
+{
+          editing ? (
+
+            <div className='flex items-center gap-3'>
+
+              {/* Cancel */}
+
+              <button
+                onClick={() => {
+
+                  setForm({
+                    name: profile.user?.name || "",
+                    specialization: profile.specialization || "",
+                    qualification: profile.qualification || "",
+                    experience: profile.experience || "",
+                    consultationFee: profile.consultationFee || "",
+                    licenseNumber: profile.licenseNumber || "",
+                    about: profile.about || "",
+                    isAvailable: profile.isAvailable || false
+                  })
+
+                  setEditing(false)
+
+                }}
+                className='px-4 py-2 border border-red-500 rounded-xl text-red-600 hover:bg-red-100'
+              >
+
+                Cancel
+
+              </button>
+
+
+
+              {/* Save */}
+
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className='px-4 py-2 bg-green-600 text-white rounded-xl flex items-center gap-2'
+              >
+
+                {
+                  saving
+                    ? "Saving..."
+                    : "Save Changes"
+                }
+
+              </button>
+
+            </div>
+
+          ) : (
+
+            <button
+              onClick={() => setEditing(true)}
+              className='px-4 py-2 bg-blue-600 text-white rounded-xl flex items-center gap-2'
+            >
+
+              <Edit3 size={16} />
+
+              Edit Profile
+
+            </button>
+
+          )
+        }
+
+      
       </div>
 
       <div className='bg-white border border-slate-200 rounded-2xl p-6'>
@@ -120,12 +225,12 @@ function Profile() {
         <div className='flex justify-between py-5'>
           <div className=' flex items-center gap-4 mb-8'>
             <div className='w-16 h-16 rounded-2xl bg-blue-600 text-white flex items-center text-2xl justify-center font-bold'>
-              {profile?.user?.name?.charAt(0)}
+              {form.name?.charAt(0)}
             </div>
             {/* /Info */}
             <div>
-              <h2 className='text-xl font-bold text-slate-800'>{profile?.user?.name}</h2>
-              <p className='text-sm text-slate-600'>{profile?.specialization}</p>
+              <h2 className='text-xl font-bold text-slate-800'>{form.name}</h2>
+              <p className='text-sm text-slate-600'>{form.specialization}</p>
               <p className='text-xs text-slate-500'>{profile?.user?.email}</p>
             </div>
           </div>
@@ -133,10 +238,18 @@ function Profile() {
           {/* Availability */}
           <div className='flex items-center gap-4 mb-8 px-1'>
             <p className='text-sm  font-semibold text-slate-600'>Available</p>
-            <div
-              className={`w-14 h-7 rounded-full relative
+            <button
+              disabled={!editing}
+
+              onClick={() =>
+                setForm((prev) => ({
+                  ...prev,
+                  isAvailable: !prev.isAvailable
+                }))
+              }
+              className={`w-14 h-7 rounded-full relative transition-all duration-300
   
-              ${profile?.isAvailable
+              ${form.isAvailable
                   ? "bg-green-500"
                   : "bg-slate-300"
                 }
@@ -146,19 +259,19 @@ function Profile() {
               <div
                 className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-all
       
-              ${profile?.isAvailable
+              ${form.isAvailable
                     ? "left-8"
                     : "left-1"
                   }
               `}
               />
 
-            </div>
+            </button>
 
             <span
               className={`text-sm font-medium
     
-            ${profile?.isAvailable
+            ${form.isAvailable
                   ? "text-green-600"
                   : "text-slate-400"
                 }
@@ -166,7 +279,7 @@ function Profile() {
             >
 
               {
-                profile?.isAvailable
+                form.isAvailable
                   ? "Online"
                   : "Offline"
               }
@@ -182,7 +295,10 @@ function Profile() {
         <div className='grid grid-cols-2 gap-5 '>
           <Field
             icon={User} label="Full Name"
-            value={profile?.user?.name}
+            name="name"
+            value={form.name}
+            editing={editing}
+            onChange={handleChange}
           />
           <Field
             icon={Mail} label="Email"
@@ -190,23 +306,40 @@ function Profile() {
           />
           <Field
             icon={Stethoscope} label="Speacialization"
-            value={profile?.specialization}
+            name="specialization"
+            value={form.specialization}
+            editing={editing}
+            onChange={handleChange}
           />
           <Field
             icon={GraduationCap} label="Qualification"
-            value={profile?.qualification}
+            name="qualification"
+            value={form.qualification}
+            editing={editing}
+            onChange={handleChange}
           />
           <Field
             icon={Clock} label="Experience"
-            value={`${profile?.experience}`}
+            name="experience"
+            value={form.experience}
+            editing={editing}
+            onChange={handleChange}
+            type='number'
           />
           <Field
             icon={IndianRupee} label="Consultation Fee"
-            value={`₹ ${profile?.consultationFee}`}
+            value={form.consultationFee}
+            name="consultationFee"
+            editing={editing}
+            onChange={handleChange}
+            type='number'
           />
           <Field
             icon={BadgeCheck} label="License Number"
-            value={profile?.licenseNumber}
+            value={form.licenseNumber}
+            name="licenseNumber"
+            editing={editing}
+            onChange={handleChange}
           />
 
         </div>
@@ -215,7 +348,11 @@ function Profile() {
         <div className='mt-6'>
           <Field
             icon={FileText} label="About"
-            value={profile?.about}
+            name="about"
+            value={form.about}
+            editing={editing}
+            onChange={handleChange}
+            textarea
           />
         </div>
       </div>
