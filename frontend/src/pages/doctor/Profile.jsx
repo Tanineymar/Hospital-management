@@ -1,17 +1,44 @@
-import { User, Mail, Stethoscope, GraduationCap, Clock, IndianRupee, BadgeCheck, FileText } from 'lucide-react'
+import {
+  User, Mail, Stethoscope, GraduationCap, Clock, IndianRupee, BadgeCheck, FileText,
+  Edit3
+} from 'lucide-react'
+
 import API from "../../api/axios.js"
 import { useEffect, useState } from 'react'
 
-function Field({ icon: Icon, label, value }) {
+function Field({ icon: Icon, label, value, name, editing, onChange, type = "text", textarea = false }) {
   return (
     <div>
       <label className='flex items-center gap-2 text-xs font-semibold text-slate-500 mb-2'>
         <Icon size={14} />
         {label}
       </label>
-      <div className='border border-slate-100 bg-slate-50 rounded-xl px-4 py-3 text-slate-700 font-medium'>
-        {value || "-"}
-      </div>
+      {
+        editing ? (
+          textarea ? (
+            <textarea
+              rows={4}
+              name={name}
+              value={value}
+              onChange={onChange}
+              className='w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-blue-500 resize-none'
+            />
+          ) : (
+            <input
+              type={type}
+              name={name}
+              value={value}
+              onChange={onChange}
+              className='w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:border-blue-500'
+            />
+          )
+        ) : (
+          <div className='border border-slate-100 bg-slate-50 rounded-xl px-4 py-3 text-slate-700 font-medium'>
+            {value || "-"}
+          </div>
+        )
+      }
+
     </div>
   )
 }
@@ -19,12 +46,36 @@ function Field({ icon: Icon, label, value }) {
 function Profile() {
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [editing, setEditing] = useState(false)
+
+
+  const [form, setForm] = useState({
+    name: "",
+    specialization: "",
+    qualification: "",
+    experience: "",
+    consultationFee: "",
+    about: "",
+    isAvailable: false
+  })
 
   useEffect(() => {
     API.get("/doctor/profile/me")
       .then((res) => {
-        setProfile(res.data.doctor)
+        const doctor = res.data.doctor
+        setProfile(doctor)
         console.log(res.data.doctor)
+
+        setForm({
+          name: doctor.user?.name || "",
+          specialization: doctor.specialization || "",
+          experience: doctor.experience || "",
+          consultationFee: doctor.consultationFee || "",
+          licenseNumber: doctor.licenseNumber || "",
+          about: doctor.about || "",
+          isAvailable: doctor.isAvailable || false
+
+        })
       })
       .catch((error) => {
         console.log(error)
@@ -34,6 +85,14 @@ function Profile() {
       })
   }, [])
 
+  function handleChange(event) {
+    setForm((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value
+    }))
+
+  }
+
   if (loading) {
     return (
       <div className='flex justify-center items-center h-[90vh] '>
@@ -41,12 +100,19 @@ function Profile() {
       </div>
     )
   }
+
   return (
     <div className='space-y-6'>
 
-      <div>
+      <div className='flex justify-between items-center'>
+        <div>
         <h1 className='text-2xl font-bold text-slate-800'>My profile</h1>
         <p className='text-sm text-slate-500'>View your professional details</p>
+      </div>
+
+      <button onClick={()=>setEditing(true)} 
+      className='px-4 py-2 bg-blue-600 text-white rounded-xl flex items-center gap-2'
+      >< Edit3 size={16}/> Edit Profile</button>
       </div>
 
       <div className='bg-white border border-slate-200 rounded-2xl p-6'>
@@ -142,14 +208,14 @@ function Profile() {
             icon={BadgeCheck} label="License Number"
             value={profile?.licenseNumber}
           />
-          
+
         </div>
 
         {/* About */}
         <div className='mt-6'>
-          <Field 
-           icon={FileText} label="About"
-           value={profile?.about}
+          <Field
+            icon={FileText} label="About"
+            value={profile?.about}
           />
         </div>
       </div>
