@@ -1,10 +1,20 @@
-import { CalendarDays, Clock, Mail, CheckCircle2, XCircle, Inbox, RefreshCw, Key } from "lucide-react"
+import { CalendarDays, Clock, Mail, CheckCircle2, XCircle, Inbox, RefreshCw, } from "lucide-react"
 import API from "../../api/axios.js"
 import { useEffect, useState } from "react"
 
 function getStatus(apt) {
   if (apt.isRejected) return "rejected"
   return "confirmed"
+}
+
+function formatDate(iso) {
+  if (!iso) return "—"
+
+  return new Date(iso).toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  })
 }
 
 const GRADIENTS = [
@@ -204,38 +214,37 @@ function Appointments() {
       {/* Stat cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         <StatCard
-        icon={CalendarDays}
-        label="Total"
-        value={counts.all}
-        color="blue"
+          icon={CalendarDays}
+          label="Total"
+          value={counts.all}
+          color="blue"
         />
 
         <StatCard
-        icon={CheckCircle2}
-        label="Confirmed"
-        value={counts.confirmed}
-        color="green"
+          icon={CheckCircle2}
+          label="Confirmed"
+          value={counts.confirmed}
+          color="green"
         />
 
         <StatCard
-        icon={XCircle}
-        label="rejected"
-        value={counts.rejected}
-        color="red"
+          icon={XCircle}
+          label="rejected"
+          value={counts.rejected}
+          color="red"
         />
       </div>
 
       {/* Filters tab */}
       <div className="flex gap-2 mb-5 flex-wrap">
-        {filters.map(({key , label})=>(
+        {filters.map(({ key, label }) => (
           <button key={key}
-          onClick={()=> setFilter(key)}
-          className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-all duration-150
-            ${
-              filter === key 
-              ?"bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-100"
-              :"bg-white text-slate-500 border-slate-200 hover:border-blue-300 hover:text-blue-600"
-            }`}
+            onClick={() => setFilter(key)}
+            className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-all duration-150
+            ${filter === key
+                ? "bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-100"
+                : "bg-white text-slate-500 border-slate-200 hover:border-blue-300 hover:text-blue-600"
+              }`}
           >
             {label}
             <span className="ml-1.5 text-xs opacity-60">
@@ -249,15 +258,15 @@ function Appointments() {
       {
         filtered.length === 0 && (
           <div className="flex flex-col items-center justify-center py-24 gap- text-center">
-            <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center">
-              <Inbox className="text-slate-600" size={26}/>
+            <div className="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center">
+              <Inbox className="text-blue-600" size={26} />
             </div>
             <p className="font-semibold text-slate-600 mt-2">No appointments found</p>
 
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-slate-500">
               {filter === "all"
-               ? "You have no appointments yet."
-               : `No ${filter} appointments.`
+                ? "You have no appointments yet."
+                : `No ${filter} appointments.`
               }
             </p>
           </div>
@@ -268,46 +277,130 @@ function Appointments() {
 
       <div className="flex flex-col gap-3">
         {
-          filtered.map((apt , i)=>{
+          filtered.map((apt, i) => {
             const status = getStatus(apt)
-            const isBeingRejected = rejectingId == apt._id
+            const isBeingRejected = rejectingId === apt._id
 
-            return(
-              <div key={apt._id}
-              className="bg-white border-blue-50 rounded-2xl px-5 py-4 shadow-sm flex
-               items-center gap-4 flex-wrap transition-all duration-150 hover:shadow-md hover:border-blue-100"
-              >
-                <Avatar 
-                name={apt.patient?.name}
-                index={i}
-                />
+            return (
+              <div
+  key={apt._id}
+  className="bg-white border border-blue-50 rounded-2xl p-4 shadow-sm hover:shadow-md hover:border-blue-100 transition-all duration-200"
+>
 
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <p className="font-bold text-slate-800 text-sm m-0">{apt.patient?.name}</p>
-                    <StatusBadge status={status}/>
-                  </div>
-                  <div className="flex items-center gap-1.5 mt-1">
-                    <Mail className="text-slate-400 shrink-0" size={11}/>
-                    <p className="text-xs text-slate-400 m-0 truncate">{apt.patient?.email}</p>
-                  </div>
-                </div> 
+  <div className="flex items-center justify-between gap-4 flex-wrap">
 
+    {/* Left Side */}
 
-                <div className="flex flex-col items-end gap-1 shrink-0">
-                  <div className="flex items-center gap-1.5">
-                    <CalendarDays
-                    size={13}
-                    className="text-blue-400"
-                    />
-                    <span>
-                      
-                    </span>
-                  </div>
-                </div>
-                
+    <div className="flex items-center gap-3 min-w-0">
 
-              </div>
+      <Avatar
+        name={apt.patient?.name}
+        index={i}
+      />
+
+      <div className="min-w-0">
+
+        <div className="flex items-center gap-2 flex-wrap">
+
+          <p className="font-bold text-slate-800 text-sm truncate">
+            {apt.patient?.name}
+          </p>
+
+          <StatusBadge status={status} />
+
+        </div>
+
+        <div className="flex items-center gap-1.5 mt-1">
+
+          <Mail
+            size={11}
+            className="text-slate-400 shrink-0"
+          />
+
+          <p className="text-xs text-slate-400 truncate">
+            {apt.patient?.email}
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    {/* Right Side */}
+
+    <div className="flex items-center gap-4 flex-wrap">
+
+      {/* Date + Time */}
+
+      <div className="flex flex-col items-start gap-1">
+
+        {/* Date */}
+
+        <div className="flex items-center gap-1.5 text-sm text-slate-600">
+
+          <CalendarDays
+            size={14}
+            className="text-blue-400"
+          />
+
+          <span className="font-semibold">
+            {formatDate(apt.date)}
+          </span>
+
+        </div>
+
+        {/* Time */}
+
+        <div className="flex items-center gap-1.5 text-sm text-slate-600">
+
+          <Clock
+            size={13}
+            className="text-blue-400"
+          />
+
+          <span>
+            {apt.slot}
+          </span>
+
+        </div>
+
+      </div>
+
+      {/* Action */}
+
+      {status === "confirmed" ? (
+
+        <button
+          onClick={() => handleReject(apt._id)}
+          disabled={isBeingRejected}
+          className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold border border-red-200 text-red-500 hover:bg-red-50 transition-all duration-300 disabled:opacity-50"
+        >
+
+          <XCircle size={14} />
+
+          {isBeingRejected
+            ? "Rejecting..."
+            : "Reject"}
+
+        </button>
+
+      ) : (
+
+        <div className="flex items-center gap-1 text-xs font-semibold text-red-400">
+
+          <XCircle size={13} />
+          Rejected
+
+        </div>
+
+      )}
+
+    </div>
+
+  </div>
+
+</div>
             )
           })
         }
