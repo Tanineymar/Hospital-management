@@ -67,9 +67,12 @@ function StatusBadge({ status }) {
 
 function StatCard({ icon: Icon, label, value, color }) {
   const gradients = {
-    blue: "from-blue-500 via-blue-600 to-indigo-600",
-    green: "from-emerald-500 via-green-600 to-teal-600",
-    red: "from-rose-500 via-red-500 to-pink-600",
+    // blue: "from-blue-500 via-blue-600 to-indigo-600",
+    // green: "from-emerald-500 via-green-600 to-teal-600",
+    // red: "from-rose-500 via-red-500 to-pink-600",
+      blue: "from-blue-400 to-blue-600",
+  green: "from-green-400 to-green-600",
+  red: "from-red-300 to-red-600",
   }
 
   return (

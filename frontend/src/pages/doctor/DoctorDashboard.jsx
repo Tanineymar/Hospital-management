@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom"
 function DoctorDashboard(){
     const [sidebarOpen , setSidebarOpen] = useState(true)
     return(
-        <div className=" flex min-h-screen">
+        <div className=" flex min-h-screen ">
             <Sidebar
              sidebarOpen={sidebarOpen}
              setSidebarOpen={setSidebarOpen}
