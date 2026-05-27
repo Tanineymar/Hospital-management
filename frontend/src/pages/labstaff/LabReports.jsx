@@ -18,8 +18,14 @@ useEffect(()=>{
     return(
         <div>
             <h1>LAB REPORTS PAGE</h1>
-            <h1>{reports.department}</h1>
-            <h1>{reports.length}</h1>
+            {
+                reports.map((report)=>(
+                    <div key={report._id} className="flex items-center justify-center p-3 border border-blue-400 m-5 bg-blue-50">
+                        <h1 className="text-slate-900 font-semibold">{report.patient.name}</h1>
+
+                    </div>
+                ))
+            }
         </div>
     )
 }
