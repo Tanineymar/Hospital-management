@@ -30,4 +30,4 @@ useEffect(()=>{
     )
 }
 
-export default LabReports
+export default LabR
