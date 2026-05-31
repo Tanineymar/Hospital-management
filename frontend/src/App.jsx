@@ -11,6 +11,7 @@ import Overview from "./pages/doctor/Overview.jsx"
 import Appointments from "./pages/doctor/Appointments.jsx"
 
 import LabReports from "./pages/labstaff/LabReports.jsx"
+import LabstaffDashboard from "./pages/labstaff/LabstaffDashboard.jsx"
 function App() {
   return (
     <>
@@ -30,7 +31,9 @@ function App() {
     </Route>
 
     {/* LAB-STAFF DASHBOARD */}
-       <Route path="/labreports/order" element={<LabReports/>}/>
+      <Route path="/labstaff" element={<LabstaffDashboard/>}>
+       <Route path="orders" element={<LabReports/>}/>
+      </Route>
     </Routes>
     
     </>
