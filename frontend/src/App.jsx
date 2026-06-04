@@ -10,7 +10,7 @@ import Profile from "./pages/doctor/Profile.jsx"
 import Overview from "./pages/doctor/Overview.jsx"
 import Appointments from "./pages/doctor/Appointments.jsx"
 
-import LabReports from "./pages/labstaff/LabReports.jsx"
+import LabOverviewPage from "./pages/labstaff/Laboverviewpage.jsx"
 import LabstaffDashboard from "./pages/labstaff/LabstaffDashboard.jsx"
 function App() {
   return (
@@ -32,7 +32,7 @@ function App() {
 
     {/* LAB-STAFF DASHBOARD */}
       <Route path="/labstaff" element={<LabstaffDashboard/>}>
-       <Route path="orders" element={<LabReports/>}/>
+       <Route path="orders" element={<LabOverviewPage/>}/>
       </Route>
     </Routes>
     
